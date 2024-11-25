@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Builder Extension</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .main-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        background: white;
+      }
+      .btn-custom {
+        border-radius: 25px;
+        padding: 10px 30px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+      }
+      .btn-create {
+        background: linear-gradient(45deg, #4caf50, #45a049);
+        border: none;
+        color: white;
+      }
+      .btn-tailor {
+        background: linear-gradient(45deg, #2196f3, #1976d2);
+        border: none;
+        color: white;
+      }
+      .section-header {
+        background: #f8f9fa;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #1976d2;
+      }
+      .form-control {
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+        padding: 10px 15px;
+      }
+      .add-more-btn {
+        background: linear-gradient(45deg, #ff9800, #f57c00);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 5px 15px;
+      }
+      .remove-btn {
+        color: #dc3545;
+        cursor: pointer;
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Main Menu -->
+    <div class="container main-container" id="mainMenu">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card mb-4 p-4 text-center">
+            <h2 class="mb-4">Resume Builder</h2>
+            <div class="d-grid gap-3">
+              <button
+                class="btn btn-custom btn-create"
+                onclick="showResumeForm()"
+              >
+                Create LaTeX Resume
+              </button>
+              <button
+                class="btn btn-custom btn-tailor"
+                onclick="showTailorForm()"
+              >
+                Tailor Resume
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resume Creation Form -->
+    <div class="container main-container" id="resumeForm" style="display: none">
+      <div class="card p-4">
+        <h2 class="text-center mb-4">Create LaTeX Resume</h2>
+        <form id="latexResumeForm">
+          <!-- Personal Information -->
+          <div class="section-header">
+            <h3>Personal Information</h3>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Full Name*</label>
+              <input type="text" class="form-control" name="name" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Contact Number*</label>
+              <input
+                type="tel"
+                class="form-control"
+                name="contact_number"
+                required
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Email*</label>
+              <input type="email" class="form-control" name="email" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">LinkedIn URL</label>
+              <input type="url" class="form-control" name="linkedin" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">GitHub URL</label>
+              <input type="url" class="form-control" name="github" />
+            </div>
+            <div class="col-md-12">
+              <label class="form-label">Professional Summary*</label>
+              <textarea
+                class="form-control"
+                name="summary"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div
+            class="section-header d-flex justify-content-between align-items-center"
+          >
+            <h3>Education</h3>
+            <button
+              type="button"
+              class="btn add-more-btn"
+              onclick="addEducation()"
+            >
+              Add Education
+            </button>
+          </div>
+          <div id="educationContainer">
+            <div class="education-entry mb-4">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Course Name*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="course[]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Institution/University*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="institution[]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Marks (%)*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="marks[]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Duration*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="duration[]"
+                    placeholder="e.g., Aug 2019 - June 2023"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Work Experience -->
+          <div
+            class="section-header d-flex justify-content-between align-items-center"
+          >
+            <h3>Work Experience</h3>
+            <button
+              type="button"
+              class="btn add-more-btn"
+              onclick="addWorkExperience()"
+            >
+              Add Experience
+            </button>
+          </div>
+          <div id="workExperienceContainer">
+            <div class="work-experience-entry mb-4">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Title*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="work_title[]"
+                    placeholder="e.g., Software Developer at XYZ Ltd."
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Duration*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="work_duration[]"
+                    placeholder="e.g., June 2020 - Present"
+                    required
+                  />
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Descriptions*</label>
+                  <textarea
+                    class="form-control work-descriptions"
+                    name="work_descriptions[]"
+                    rows="3"
+                    placeholder="Enter each description on a new line"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div
+            class="section-header d-flex justify-content-between align-items-center"
+          >
+            <h3>Projects</h3>
+            <button
+              type="button"
+              class="btn add-more-btn"
+              onclick="addProject()"
+            >
+              Add Project
+            </button>
+          </div>
+          <div id="projectContainer">
+            <div class="project-entry mb-4">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">Project Title*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="project_title[]"
+                    required
+                  />
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Descriptions*</label>
+                  <textarea
+                    class="form-control project-descriptions"
+                    name="project_descriptions[]"
+                    rows="3"
+                    placeholder="Enter each description on a new line"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills and Others -->
+          <div class="section-header">
+            <h3>Skills & Additional Information</h3>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"
+                >Technical Skills* (comma-separated)</label
+              >
+              <textarea
+                class="form-control"
+                name="technical_skills"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Soft Skills* (comma-separated)</label>
+              <textarea
+                class="form-control"
+                name="soft_skills"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Certifications (comma-separated)</label>
+              <textarea
+                class="form-control"
+                name="certifications"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Activities (comma-separated)</label>
+              <textarea
+                class="form-control"
+                name="activities"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Languages (comma-separated)</label>
+              <textarea
+                class="form-control"
+                name="languages"
+                rows="2"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="text-center">
+            <button type="submit" class="btn btn-custom btn-create">
+              Generate Resume
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary ms-2"
+              onclick="showMainMenu()"
+            >
+              Back
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Resume Tailoring Form -->
+    <div class="container main-container" id="tailorForm" style="display: none">
+      <div class="card p-4">
+        <h2 class="text-center mb-4">Tailor Your Resume</h2>
+        <form id="resumeTailorForm">
+          <div class="mb-4">
+            <label class="form-label">Paste Job Description*</label>
+            <textarea
+              class="form-control"
+              name="jobDescription"
+              rows="10"
+              required
+            ></textarea>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-custom btn-tailor">
+              Tailor Resume
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary ms-2"
+              onclick="showMainMenu()"
+            >
+              Back
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Show/Hide Functions
+      function showMainMenu() {
+        document.getElementById("mainMenu").style.display = "block";
+        document.getElementById("resumeForm").style.display = "none";
+        document.getElementById("tailorForm").style.display = "none";
+      }
+
+      function showResumeForm() {
+        document.getElementById("mainMenu").style.display = "none";
+        document.getElementById("resumeForm").style.display = "block";
+        document.getElementById("tailorForm").style.display = "none";
+      }
+
+      function showTailorForm() {
+        document.getElementById("mainMenu").style.display = "none";
+        document.getElementById("resumeForm").style.display = "none";
+        document.getElementById("tailorForm").style.display = "block";
+      }
+
+      // Add Education Entry
+      function addEducation() {
+        const container = document.getElementById("educationContainer");
+        const template = container
+          .querySelector(".education-entry")
+          .cloneNode(true);
+        template
+          .querySelectorAll("input")
+          .forEach((input) => (input.value = ""));
+        container.appendChild(template);
+      }
+
+      // Add Work Experience Entry
+      function addWorkExperience() {
+        const container = document.getElementById("workExperienceContainer");
+        const template = container
+          .querySelector(".work-experience-entry")
+          .cloneNode(true);
+        template
+          .querySelectorAll("input, textarea")
+          .forEach((input) => (input.value = ""));
+        container.appendChild(template);
+      }
+
+      // Add Project Entry
+      function addProject() {
+        const container = document.getElementById("projectContainer");
+        const template = container
+          .querySelector(".project-entry")
+          .cloneNode(true);
+        template
+          .querySelectorAll("input, textarea")
+          .forEach((input) => (input.value = ""));
+        container.appendChild(template);
+      }
+
+      // Form Submission Handlers
+      document
+        .getElementById("latexResumeForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Collect form data
+          const formData = new FormData(this);
+          const data = {
+            personal: {
+              name: formData.get("name"),
+              contact_number: formData.get("contact_number"),
+              email: formData.get("email"),
+              linkedin: formData.get("linkedin"),
+              github: formData.get("github"),
+              summary: formData.get("summary"),
+            },
+            education: Array.from(
+              document.querySelectorAll(".education-entry")
+            ).map((entry) => ({
+              course: entry.querySelector('[name="course[]"]').value,
+              institution: entry.querySelector('[name="institution[]"]').value,
+              marks: entry.querySelector('[name="marks[]"]').value,
+              duration: entry.querySelector('[name="duration[]"]').value,
+            })),
+            work_experiences: Array.from(
+              document.querySelectorAll(".work-experience-entry")
+            ).map((entry) => ({
+              title: entry.querySelector('[name="work_title[]"]').value,
+              duration: entry.querySelector('[name="work_duration[]"]').value,
+              descriptions: entry
+                .querySelector('[name="work_descriptions[]"]')
+                .value.split("\n")
+                .filter((desc) => desc.trim()),
+            })),
+            projects: Array.from(
+              document.querySelectorAll(".project-entry")
+            ).map((entry) => ({
+              title: entry.querySelector('[name="project_title[]"]').value,
+              descriptions: entry
+                .querySelector('[name="project_descriptions[]"]')
+                .value.split("\n")
+                .filter((desc) => desc.trim()),
+            })),
+            skills: {
+              technical: formData.get("technical_skills"),
+              soft: formData.get("soft_skills"),
+            },
+            additional: {
+              certifications: formData.get("certifications"),
+              activities: formData.get("activities"),
+              languages: formData.get("languages"),
+            },
+          };
+
+          try {
+            // Send data to backend for LaTeX generation
+            const response = await fetch("/api/generate-resume", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+              const blob = await response.blob();
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "resume.pdf";
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+              alert("Resume generated successfully!");
+            } else {
+              throw new Error("Failed to generate resume");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to generate resume. Please try again.");
+          }
+        });
+
+      // Handle resume tailoring form submission
+      document
+        .getElementById("resumeTailorForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+          const jobDescription = formData.get("jobDescription");
+
+          try {
+            // Send job description to backend for tailoring
+            const response = await fetch("/api/tailor-resume", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ jobDescription }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              alert(
+                "Resume tailored successfully! You can download the updated version."
+              );
+
+              // Download tailored resume
+              const pdfResponse = await fetch("/api/download-tailored-resume");
+              if (pdfResponse.ok) {
+                const blob = await pdfResponse.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "tailored-resume.pdf";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+              }
+            } else {
+              throw new Error("Failed to tailor resume");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to tailor resume. Please try again.");
+          }
+        });
+
+      // Function to show skill details
+      function toggleSkillDetails(skillType) {
+        const detailsElement = document.getElementById(
+          `${skillType}SkillDetails`
+        );
+        if (detailsElement) {
+          detailsElement.style.display =
+            detailsElement.style.display === "none" ? "block" : "none";
+        }
+      }
+
+      // Function to remove entries
+      function removeEntry(entryElement) {
+        if (entryElement && entryElement.parentElement) {
+          entryElement.parentElement.removeChild(entryElement);
+        }
+      }
+
+      // Add remove buttons to existing entries
+      document
+        .querySelectorAll(
+          ".education-entry, .work-experience-entry, .project-entry"
+        )
+        .forEach((entry) => {
+          const removeButton = document.createElement("button");
+          removeButton.type = "button";
+          removeButton.className = "btn btn-danger btn-sm float-end remove-btn";
+          removeButton.innerHTML = "&times;";
+          removeButton.onclick = function () {
+            removeEntry(entry);
+          };
+          entry
+            .querySelector(".row")
+            .insertBefore(removeButton, entry.querySelector(".row").firstChild);
+        });
+
+      // Enhance addEducation function to include remove button
+      const originalAddEducation = window.addEducation;
+      window.addEducation = function () {
+        originalAddEducation();
+        const newEntry = document.querySelector(".education-entry:last-child");
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.className = "btn btn-danger btn-sm float-end remove-btn";
+        removeButton.innerHTML = "&times;";
+        removeButton.onclick = function () {
+          removeEntry(newEntry);
+        };
+        newEntry
+          .querySelector(".row")
+          .insertBefore(
+            removeButton,
+            newEntry.querySelector(".row").firstChild
+          );
+      };
+
+      // Similar enhancements for work experience and projects
+      const originalAddWorkExperience = window.addWorkExperience;
+      window.addWorkExperience = function () {
+        originalAddWorkExperience();
+        const newEntry = document.querySelector(
+          ".work-experience-entry:last-child"
+        );
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.className = "btn btn-danger btn-sm float-end remove-btn";
+        removeButton.innerHTML = "&times;";
+        removeButton.onclick = function () {
+          removeEntry(newEntry);
+        };
+        newEntry
+          .querySelector(".row")
+          .insertBefore(
+            removeButton,
+            newEntry.querySelector(".row").firstChild
+          );
+      };
+
+      const originalAddProject = window.addProject;
+      window.addProject = function () {
+        originalAddProject();
+        const newEntry = document.querySelector(".project-entry:last-child");
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.className = "btn btn-danger btn-sm float-end remove-btn";
+        removeButton.innerHTML = "&times;";
+        removeButton.onclick = function () {
+          removeEntry(newEntry);
+        };
+        newEntry
+          .querySelector(".row")
+          .insertBefore(
+            removeButton,
+            newEntry.querySelector(".row").firstChild
+          );
+      };
+    </script>
+  </body>
+</html>
