@@ -59,8 +59,8 @@ resume-builder/
 ### Local Development
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/resume-builder.git
-cd resume-builder
+git clone https://github.com/yourusername/resume-builder-ai.git
+cd resume-builder-ai
 ```
 
 2. Create and activate virtual environment
