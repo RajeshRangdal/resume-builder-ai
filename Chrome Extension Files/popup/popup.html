@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Builder</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="../css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="mainMenu" class="container main-container">
+      <button id="resumeBuilderButton" class="btn btn-primary">
+        Build Resume
+      </button>
+      <button id="tailorResumeButton" class="btn btn-secondary">
+        Tailor Resume
+      </button>
+    </div>
+
+    <div id="resumeForm" class="container main-container" style="display: none">
+      <!-- Resume Form Content -->
+    </div>
+
+    <div id="tailorForm" class="container main-container" style="display: none">
+      <!-- Tailor Form Content -->
+    </div>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/resumeBuilder.js"></script>
+    <script src="../js/tailorResume.js"></script>
+    <script src="../lib/latex-template.js"></script>
+    <script src="../popup/popup.js"></script>
+  </body>
+</html>

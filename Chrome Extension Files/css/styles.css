@@ -1,0 +1,40 @@
+.main-container {
+  width: 800px;
+  padding: 20px;
+}
+
+.section-header {
+  margin: 20px 0;
+  padding: 10px 0;
+  border-bottom: 2px solid #eee;
+}
+
+.education-entry,
+.work-experience-entry,
+.project-entry {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+/* Form specific styles */
+.form-control {
+  margin-bottom: 10px;
+}
+
+.btn-add {
+  padding: 5px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
+
+.btn-remove {
+  padding: 5px 15px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
